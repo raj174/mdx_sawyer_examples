@@ -101,16 +101,17 @@ def map_keyboard(side):
                     print("  %s: %s" % (key, val[2]))
 
 def main():
-    """RSDK Joint Position Example: Keyboard Control
+    """Modified Joint Position Example
 
-    Use your dev machine's keyboard to control joint positions.
+    Use your keyboard to control joint positions.
 
     Each key corresponds to increasing or decreasing the angle
-    of a joint on Sawyer's arm. The increasing and descreasing
-    are represented by number key and letter key next to the number.
+    of a joint on Sawyer's arm.
+
+    While n give the option to change the angle increment value.
     """
     epilog = """
-See help inside the example with the '?' key for key bindings.
+        See help inside the example with the '?' key for key bindings.
     """
     rp = intera_interface.RobotParams()
     valid_limbs = rp.get_limb_names()
@@ -130,12 +131,13 @@ See help inside the example with the '?' key for key bindings.
     args = parser.parse_args(rospy.myargv()[1:])
 
     print("Initializing node... ")
-    rospy.init_node("sdk_joint_position_keyboard")
+    rospy.init_node("move_individual_joint_position")
     print("Getting robot state... ")
     rs = intera_interface.RobotEnable(CHECK_VERSION)
     init_state = rs.state().enabled
 
     def clean_shutdown():
+        print(limb.endpoint_pose())
         print("\nExiting example.")
 
     rospy.on_shutdown(clean_shutdown)
@@ -143,6 +145,7 @@ See help inside the example with the '?' key for key bindings.
     rospy.loginfo("Enabling robot...")
     rs.enable()
     map_keyboard(args.limb)
+    print(limb.endpoint_pose())
     print("Done.")
 
 

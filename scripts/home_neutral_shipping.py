@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 import rospy
 import intera_interface
-
+from intera_interface import CHECK_VERSION
 
 rospy.init_node('Home_neutral_shipping', anonymous = True)
+rs = intera_interface.RobotEnable(CHECK_VERSION)
 limb_mv = intera_interface.Limb('right')
 head = intera_interface.Head()
+
+init_state = rs.state().enabled
 limb_mv.set_joint_position_speed(0.1)
 current_pose = limb_mv.endpoint_pose() 
 print (current_pose)
@@ -19,14 +22,14 @@ chosen_position = raw_input(question).lower()
 if chosen_position == "n":
     limb_mv.move_to_neutral()
     print (limb_mv.joint_angles())
-    current_pose = limb_mv.endpoint_pose() # get current endpoint pose
+    current_pose = limb_mv.endpoint_pose() 
     print current_pose 
     rospy.sleep(0.5)
 
 elif chosen_position == "h":
     limb_mv.move_to_joint_positions(home_position)
     print (limb_mv.joint_angles())
-    current_pose = limb_mv.endpoint_pose() # get current endpoint pose
+    current_pose = limb_mv.endpoint_pose() 
     print current_pose 
     rospy.sleep(0.5)
 
@@ -35,6 +38,6 @@ elif chosen_position == "s":
     rospy.sleep(0.5)
     limb_mv.move_to_joint_positions(shipping_position)
     print (limb_mv.joint_angles())
-    current_pose = limb_mv.endpoint_pose() # get current endpoint pose
+    current_pose = limb_mv.endpoint_pose() 
     print current_pose 
     rospy.sleep(0.5)
