@@ -1,0 +1,2 @@
+rp = intera_interface.RobotParams()
+valid_limbs = rp.get_limb_names()
