@@ -1,3 +1,4 @@
+#Still on testing phase. The methods below should work but this is not guranteed.
 #!/usr/bin/env python
 import rospy
 import intera_interface
