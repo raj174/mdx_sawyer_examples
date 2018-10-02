@@ -1,20 +1,15 @@
-wave1 = {'right_j6': 0.0, 'right_j5': 0.0, 'right_j4': 0.0, 'right_j3': 0.0, 'right_j2': 0.0, 'right_j1': 0.0, 'right_j0': 0.0}
-
-wave2 = {'right_j6': 3.3, 'right_j5': 0.6, 'right_j4': 0.0, 'right_j3': 2.2, 'right_j2': 0.0, 'right_j1': -1.2, 'right_j0': 0.0}
-
-{'right_j6': 3.04569921875, 'right_j5': 0.094322265625, 'right_j4': 0.2317763671875, 'right_j3': 0.8963623046875, 'right_j2': -0.040869140625, 'right_j1': -1.4104072265625, 'right_j0': -0.07124609375}
-
-
 # Terminal commands
 
 cd sawyer_ws
 catkin_make
-source /opt/ros/kinetic/setup.py
+source /opt/ros/kinetic/setup.bash
 catkin_make
+clear
 ./intera.sh
 env | grep ROS_MASTER_URI
 ping <ros master> (e.g. ping 011303P0017.local)
 rostopic list
+clear
 
 rosrun intera_interface enable_robot.py
 
@@ -41,17 +36,16 @@ angles = limb.joint_angles()
 move_1 = {'right_j6': 0.0, 'right_j5': 0.0, 'right_j4': 0.0, 'right_j3': 0.0, 'right_j2': 0.0, 'right_j1': 0.0, 'right_j0': 0.0}
 
 move_2 = {'right_j6': 3.3, 'right_j5': 0.6, 'right_j4': 0.0, 'right_j3': 2.2, 'right_j2': 0.0, 'right_j1': -1.2, 'right_j0': 0.0}
+(Video might be unclear at this point. This is because the video speed has been increased.) 
 
 while True:
     limb.move_to_joint_positions(move_1)
-	rospy.sleep(0.5)
-	limb.move_to_joint_positions(move_2)
-	rospy.sleep(0.5)
+    rospy.sleep(0.5)
+    limb.move_to_joint_positions(move_2)
+    rospy.sleep(0.5)
 	
-Open new terminal
+#Open new terminal
+
 #Terminal Command
 ./intera.sh
 rosrun rviz rviz
-
-
-
