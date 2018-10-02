@@ -1,37 +1,57 @@
-''' terminal part'''
+#Terminal commands
 rosrun  intera_interface enable_robot.py -e
-
 python
 
+#Pyhton code
 import rospy
 import intera_interface
 
-rospy.init_node('fk_ik_eg')x=0.704x=0.7047119667375105, y=0.7094893345141186, z=-0.00214520410793616, w=-0.0011516279776628245)7119667375105, y=0.7094893345141186, z=-0.00214520410793616, w=-0.0011516279776628245)
+rospy.init_node('fk_ik_eg')
 limb = intera_interface.Limb('right')
-
-check about cartesin pose 
-print limb.joint_angles_to_cartesian_pose(joint_angles)
+print limb.joint_angles_to_cartesian_pose(limb.joint_angles())
 print limb.endpoint_pose()
 
-(lets say i want to move 50 cm horizontally)
 limb.move_to_neutral_position()
 angles = limb.joint_angles()
 print angles
+angles['joint_name'] = <joint_angle_val>
 limb.move_to_joint_positions(copy and change angles)
+angles['joint_name'] = <joint_angle_val>
 limb.move_to_joint_positions(copy and change angles)
+angles['joint_name'] = <joint_angle_val>
 limb.move_to_joint_positions(copy and change angles)
+#Repeat until you are satisfied
 
-now lets see the location
 print limb.endpoint_pose()
 
-after several tries you might get it to move more or less to the position wanted
-limb.move_to_neutral_position()
+limb.move_to_neutral()
 current_position = limb.endpoint_pose()
+
+from intera_interface import CHECK_VERSION   #You don't need this
+from geometry_msgs.msg import (
+    PoseStamped,
+    Pose,
+    Point,
+    Quaternion,
+)
+
 go_to_position = Pose()
 go_to_position.position.x = current_pose['position'].x
-
 go_to_position.position.y = current_pose['position'].y + 0.5
 go_to_position.orientation = current_pose['orientation']
-joint_angles = limb.ik_request(current_position, right_hand)
+joint_angles = limb.ik_request(go_to_pose, right_hand)
 limb.move_to_joint_positions(joint_angles)
+
 print limb.endpoint_pose()
+print current_pose
+
+limb.move_to_neutral()
+exit()
+
+#Terminal commands
+clear
+roscd mdx_sawyer_examples/scripts/
+subl.              #If sublime text is installed
+gedit fk_ik.py     #Otherwise use gedit
+
+exit
