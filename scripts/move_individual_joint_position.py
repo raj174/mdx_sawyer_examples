@@ -4,8 +4,6 @@
 Modified Joint Position Example: keyboard
 Has feature to change the increment value
 """
-import argparse
-
 import rospy
 
 import intera_interface
@@ -18,6 +16,7 @@ def constrain(self, x, min_x, max_x):
 
 def map_keyboard(side):
     limb = intera_interface.Limb(side)
+    print (limb.tip_state("right_hand_camera"))
 
     try:
         gripper = intera_interface.Gripper(side + '_gripper')
@@ -29,7 +28,6 @@ def map_keyboard(side):
 
     joints = limb.joint_names()
     increment = 0.1
-
     def set_j(limb, joint_name, delta):
         current_position = limb.joint_angle(joint_name)
         joint_command = {joint_name: current_position + delta}
@@ -45,6 +43,7 @@ def map_keyboard(side):
                 gripper.calibrate()
 
     def set_bindings():
+        global bindings
         bindings = {
             '1': (set_j, [limb, joints[0], increment], joints[0]+" increase"),
             'q': (set_j, [limb, joints[0], -increment], joints[0]+" decrease"),
@@ -73,6 +72,7 @@ def map_keyboard(side):
     print("Controlling joints. Press ? for help, Esc to quit.")
     while not done and not rospy.is_shutdown():
         c = intera_external_devices.getch()
+        #global bindings
         if c:
             #catch Esc or ctrl-c
             if c in ['\x1b', '\x03']:
@@ -108,44 +108,30 @@ def main():
     Each key corresponds to increasing or decreasing the angle
     of a joint on Sawyer's arm.
 
-    While n give the option to change the angle increment value.
-    """
-    epilog = """
-        See help inside the example with the '?' key for key bindings.
+    n gives the option to change the angle increment value.
+
+    See help inside the example with the '?' key for key bindings.
     """
     rp = intera_interface.RobotParams()
     valid_limbs = rp.get_limb_names()
+    
+
     if not valid_limbs:
         rp.log_message(("Cannot detect any limb parameters on this robot. "
                         "Exiting."), "ERROR")
         return
-    arg_fmt = argparse.RawDescriptionHelpFormatter
-    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
-                                     description=main.__doc__,
-                                     epilog=epilog)
-    parser.add_argument(
-        "-l", "--limb", dest="limb", default=valid_limbs[0],
-        choices=valid_limbs,
-        help="Limb on which to run the joint position keyboard example"
-    )
-    args = parser.parse_args(rospy.myargv()[1:])
-
     print("Initializing node... ")
     rospy.init_node("move_individual_joint_position")
     print("Getting robot state... ")
     rs = intera_interface.RobotEnable(CHECK_VERSION)
-    init_state = rs.state().enabled
-
     def clean_shutdown():
-        print(limb.endpoint_pose())
         print("\nExiting example.")
 
     rospy.on_shutdown(clean_shutdown)
 
     rospy.loginfo("Enabling robot...")
     rs.enable()
-    map_keyboard(args.limb)
-    print(limb.endpoint_pose())
+    map_keyboard(valid_limbs[0]) # i.e right
     print("Done.")
 
 
