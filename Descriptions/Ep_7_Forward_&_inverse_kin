@@ -1,0 +1,37 @@
+''' terminal part'''
+rosrun  intera_interface enable_robot.py -e
+
+python
+
+import rospy
+import intera_interface
+
+rospy.init_node('fk_ik_eg')x=0.704x=0.7047119667375105, y=0.7094893345141186, z=-0.00214520410793616, w=-0.0011516279776628245)7119667375105, y=0.7094893345141186, z=-0.00214520410793616, w=-0.0011516279776628245)
+limb = intera_interface.Limb('right')
+
+check about cartesin pose 
+print limb.joint_angles_to_cartesian_pose(joint_angles)
+print limb.endpoint_pose()
+
+(lets say i want to move 50 cm horizontally)
+limb.move_to_neutral_position()
+angles = limb.joint_angles()
+print angles
+limb.move_to_joint_positions(copy and change angles)
+limb.move_to_joint_positions(copy and change angles)
+limb.move_to_joint_positions(copy and change angles)
+
+now lets see the location
+print limb.endpoint_pose()
+
+after several tries you might get it to move more or less to the position wanted
+limb.move_to_neutral_position()
+current_position = limb.endpoint_pose()
+go_to_position = Pose()
+go_to_position.position.x = current_pose['position'].x
+
+go_to_position.position.y = current_pose['position'].y + 0.5
+go_to_position.orientation = current_pose['orientation']
+joint_angles = limb.ik_request(current_position, right_hand)
+limb.move_to_joint_positions(joint_angles)
+print limb.endpoint_pose()
